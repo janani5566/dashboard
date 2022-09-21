@@ -1,26 +1,40 @@
-import React from 'react'
-import Aside from './Aside'
-import Footer from './Footer'
-import Header from './Header'
+import React,{Suspense} from 'react';
+import  Footer  from './Footer';
+import Header  from './Header'
+import  Aside  from './Aside';
+import { Routes } from '../routes';
+import { Route ,Switch} from 'react-router-dom'
 
 const BaseLayout = () => {
-  return (
-    <React.Fragment>
-
-        <Aside />
-        <div id="right-panel" class="right-panel">
-            <Header />
-            <div class="content">
-
-            <div class="animated fadeIn">
-                <h1>This is my content</h1>
+    return (
+        <React.Fragment>
+            <Aside />
+            <div id="right-panel" className="right-panel">
+                <Header />
+                <div className="content">
+                    <div className="animated fadeIn">
+                    <Suspense fallback={<div>Loading</div>}>
+                        <Switch>
+                        {
+                            Routes.map((route, index) => {
+                                return ((
+                                    <Route
+                                        path={route.path}
+                                        key={index}
+                                        component={route.component}
+                                        exact={route.exact}
+                                    />
+                                ))
+                            })
+                        }
+                        </Switch>
+                        </Suspense>
+                    </div>
+                </div>
+                <Footer />
             </div>
-            </div>
-            <div class="clearfix"></div>
-            <Footer />
-        </div>
-    </React.Fragment>
-  )
+        </React.Fragment>
+    );
 }
 
 export default BaseLayout
